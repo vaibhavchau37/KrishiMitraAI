@@ -121,4 +121,9 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 👥 Authors
 
+<<<<<<< HEAD
 **Vaibhav Chaudhary**
+=======
+ **Vaibhav Chaudhary**
+
+>>>>>>> 8a386497efd66e887a954ef30f65eb8eec593d1e
