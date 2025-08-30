@@ -120,15 +120,6 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 ## 👥 Authors
-<<<<<<< HEAD
-**Vaibhav Chaudhary**
-"# KrishiMitraAI" 
-=======
 
-<<<<<<< HEAD
 **Vaibhav Chaudhary**
-=======
- **Vaibhav Chaudhary**
 
->>>>>>> 8a386497efd66e887a954ef30f65eb8eec593d1e
->>>>>>> d5d15900782edd21d10690abc00c75ae85a04c55
