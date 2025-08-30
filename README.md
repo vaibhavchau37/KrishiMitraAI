@@ -120,9 +120,6 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 ## 👥 Authors
-<<<<<<< HEAD
 
-- **Vaibhav Chaudhary**
-=======
-* **Vaibhav Chaudhary**
->>>>>>> 873b1e36cd9e436728c4cad04856e6a59bbabcea
+ **Vaibhav Chaudhary**
+
