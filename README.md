@@ -7,32 +7,32 @@ It suggests the most suitable and profitable crops based on **location, land siz
 
 ## ✨ Features
 
-* **Smart Crop Recommendations** using:
+- **Smart Crop Recommendations** using:
 
-  * Location (PIN code / GPS)
-  * Land area
-  * Budget constraints
+  - Location (PIN code / GPS)
+  - Land area
+  - Budget constraints
 
-* **Detailed Crop Analysis** including:
+- **Detailed Crop Analysis** including:
 
-  * Expected Return on Investment (ROI)
-  * Crop resilience score
-  * Optimal sowing window
-  * Weather-based insights
+  - Expected Return on Investment (ROI)
+  - Crop resilience score
+  - Optimal sowing window
+  - Weather-based insights
 
 ---
 
 ## 🛠 Tech Stack
 
-* **Frontend**: Streamlit
-* **Backend**: Python
-* **Machine Learning Models**: scikit-learn, XGBoost
-* **Data Sources**:
+- **Frontend**: Streamlit
+- **Backend**: Python
+- **Machine Learning Models**: scikit-learn, XGBoost
+- **Data Sources**:
 
-  * [OpenWeatherMap API](https://openweathermap.org/api) – weather data
-  * [Soil Health Card (ICAR)](https://soilhealth.dac.gov.in/)
-  * [AgMarkNet](https://agmarknet.gov.in/) – market prices
-  * [ICRISAT](https://www.icrisat.org/) / FAO – crop yield data
+  - [OpenWeatherMap API](https://openweathermap.org/api) – weather data
+  - [Soil Health Card (ICAR)](https://soilhealth.dac.gov.in/)
+  - [AgMarkNet](https://agmarknet.gov.in/) – market prices
+  - [ICRISAT](https://www.icrisat.org/) / FAO – crop yield data
 
 ---
 
@@ -41,7 +41,7 @@ It suggests the most suitable and profitable crops based on **location, land siz
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/jaygautam-creator/KrishiMitra-AI.git
+   git clone https://github.com/vaibhavchau37/KrishiMitraAI.git
    cd KrishiMitra-AI
    ```
 
@@ -60,8 +60,8 @@ It suggests the most suitable and profitable crops based on **location, land siz
 
 4. **Set environment variables**
 
-   * Create a `.env` file in the root directory
-   * Add your API key:
+   - Create a `.env` file in the root directory
+   - Add your API key:
 
      ```
      OPENWEATHERMAP_API_KEY=your_api_key_here
@@ -94,11 +94,11 @@ KrishiMitra-AI/
 
 ## 🚀 Future Roadmap
 
-* 🌐 Multi-language support (Hindi, Marathi, Telugu, etc.)
-* 📱 Mobile app version
-* 🌱 IoT soil sensor integration
-* 💹 Real-time market price updates
-* 👨‍🌾 Community features for farmers
+- 🌐 Multi-language support (Hindi, Marathi, Telugu, etc.)
+- 📱 Mobile app version
+- 🌱 IoT soil sensor integration
+- 💹 Real-time market price updates
+- 👨‍🌾 Community features for farmers
 
 ---
 
@@ -120,7 +120,5 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 ## 👥 Authors
-
-* **Jay Gautam**
-* **Vaibhav Chaudhary**
-* **Abhishek Singh**
+**Vaibhav Chaudhary**
+"# KrishiMitraAI" 
