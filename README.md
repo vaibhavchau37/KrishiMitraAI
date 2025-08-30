@@ -41,7 +41,7 @@ It suggests the most suitable and profitable crops based on **location, land siz
 1. **Clone the repository**
 
    ```bash
-   git clone https://github.com/jaygautam-creator/KrishiMitra-AI.git
+   git clone https://github.com/vaibhavchau37/KrishiMitraAI.git
    cd KrishiMitra-AI
    ```
 
@@ -120,7 +120,4 @@ This project is licensed under the [MIT License](LICENSE).
 ---
 
 ## 👥 Authors
-
-* **Jay Gautam**
 * **Vaibhav Chaudhary**
-* **Abhishek Singh**
