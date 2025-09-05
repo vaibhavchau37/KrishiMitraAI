@@ -10,6 +10,10 @@ import numpy as np
 import requests
 import streamlit as st
 from streamlit_option_menu import option_menu  # For better navigation
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # -------------------------
 # Basic logging
@@ -27,7 +31,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
+# Simple Custom CSS
 st.markdown("""
 <style>
     .main-header {
@@ -93,20 +97,20 @@ CROP_DISEASES = {
             "season": "Most severe during heading and grain filling"
         }
     ],
-    "Wheat": [
+    "Maize": [
         {
-            "name": "Rust",
-            "symptoms": "Small, round to elongated orange pustules on leaves and stems",
-            "prevention": ["Use resistant varieties", "Early sowing", "Avoid excess nitrogen"],
-            "treatment": ["Apply fungicides like Propiconazole", "Remove alternate hosts"],
-            "season": "Cool temperatures with high humidity"
+            "name": "Corn Borer",
+            "symptoms": "Small holes in leaves, stems broken at nodes, sawdust-like frass",
+            "prevention": ["Use Bt corn varieties", "Proper crop rotation", "Remove crop residues"],
+            "treatment": ["Apply Trichogramma wasps", "Use chemical insecticides if severe"],
+            "season": "During growing season, especially early stages"
         },
         {
-            "name": "Karnal Bunt",
-            "symptoms": "Partial bunting of grains with fishy odor, black powdery mass in grains",
-            "prevention": ["Use disease-free seeds", "Crop rotation", "Avoid irrigation at flowering"],
-            "treatment": ["Seed treatment with Carbendazim", "Solarization of soil"],
-            "season": "Flowering to grain development stage"
+            "name": "Gray Leaf Spot",
+            "symptoms": "Gray to tan rectangular lesions on leaves with distinct margins",
+            "prevention": ["Use resistant hybrids", "Crop rotation", "Reduce plant density"],
+            "treatment": ["Apply fungicides like Azoxystrobin", "Remove infected debris"],
+            "season": "Warm, humid conditions during growing season"
         }
     ],
     "Cotton": [
@@ -116,24 +120,13 @@ CROP_DISEASES = {
             "prevention": ["Avoid waterlogging", "Proper spacing", "Remove infected bolls"],
             "treatment": ["Spray Copper oxychloride", "Apply Trichoderma viride"],
             "season": "Boll formation stage, especially in humid conditions"
-        }
-    ],
-    "Tomato": [
+        },
         {
-            "name": "Early Blight",
-            "symptoms": "Dark brown spots with concentric rings on leaves, stems and fruits",
-            "prevention": ["Crop rotation", "Proper spacing", "Staking plants"],
-            "treatment": ["Apply Chlorothalonil", "Use resistant varieties"],
-            "season": "Warm, humid conditions with alternating dry periods"
-        }
-    ],
-    "Sugarcane": [
-        {
-            "name": "Red Rot",
-            "symptoms": "Reddening of internal tissues with white patches, drooping of leaves",
-            "prevention": ["Use disease-free setts", "Crop rotation", "Avoid waterlogging"],
-            "treatment": ["Hot water treatment of setts", "Remove and destroy infected plants"],
-            "season": "Mainly during monsoon season"
+            "name": "Pink Bollworm",
+            "symptoms": "Pink larvae in bolls, premature opening of bolls, seed damage",
+            "prevention": ["Use pheromone traps", "Bt cotton varieties", "Crop rotation"],
+            "treatment": ["Release Trichogramma wasps", "Apply specific insecticides"],
+            "season": "During boll development stage"
         }
     ],
     "Potato": [
@@ -143,6 +136,317 @@ CROP_DISEASES = {
             "prevention": ["Use certified seeds", "Proper hilling", "Avoid overhead irrigation"],
             "treatment": ["Spray Mancozeb", "Apply systemic fungicides"],
             "season": "Cool, moist weather conditions"
+        },
+        {
+            "name": "Early Blight",
+            "symptoms": "Dark brown spots with concentric rings on leaves and tubers",
+            "prevention": ["Crop rotation", "Proper plant spacing", "Avoid overhead irrigation"],
+            "treatment": ["Apply Chlorothalonil", "Remove infected plant debris"],
+            "season": "Warm, humid conditions"
+        }
+    ],
+    "Apple": [
+        {
+            "name": "Apple Scab",
+            "symptoms": "Dark, scaly lesions on leaves and fruit, premature leaf drop",
+            "prevention": ["Plant resistant varieties", "Prune for air circulation", "Remove fallen leaves"],
+            "treatment": ["Apply fungicides like Captan", "Use dormant oil sprays"],
+            "season": "Spring and early summer, favored by wet conditions"
+        },
+        {
+            "name": "Fire Blight",
+            "symptoms": "Wilting and blackening of shoots, cankers on branches",
+            "prevention": ["Plant resistant varieties", "Avoid excess nitrogen", "Prune infected areas"],
+            "treatment": ["Apply Streptomycin during bloom", "Remove infected branches"],
+            "season": "Spring during bloom period"
+        }
+    ],
+    "Banana": [
+        {
+            "name": "Panama Disease",
+            "symptoms": "Yellowing of older leaves, wilting, vascular discoloration",
+            "prevention": ["Use disease-free planting material", "Avoid infected soil", "Practice quarantine"],
+            "treatment": ["Remove infected plants", "Soil solarization", "Use biological control agents"],
+            "season": "Year-round, spreads through soil and water"
+        },
+        {
+            "name": "Black Sigatoka",
+            "symptoms": "Dark streaks on leaves, premature leaf death, reduced fruit quality",
+            "prevention": ["Plant resistant varieties", "Improve drainage", "Remove infected leaves"],
+            "treatment": ["Apply fungicides like Propiconazole", "Use cultural practices"],
+            "season": "Warm, humid conditions throughout the year"
+        }
+    ],
+    "Coconut": [
+        {
+            "name": "Lethal Yellowing",
+            "symptoms": "Yellowing of fronds, premature nut drop, death of palm",
+            "prevention": ["Plant resistant varieties", "Control insect vectors", "Use healthy seedlings"],
+            "treatment": ["Inject tetracycline antibiotics", "Remove infected palms"],
+            "season": "Year-round, transmitted by insect vectors"
+        },
+        {
+            "name": "Bud Rot",
+            "symptoms": "Rotting of the growing point, foul smell, collapse of crown",
+            "prevention": ["Avoid injuries to palm", "Improve drainage", "Use copper fungicides"],
+            "treatment": ["Apply systemic fungicides", "Remove infected tissue"],
+            "season": "Rainy season, favored by high humidity"
+        }
+    ],
+    "Coffee": [
+        {
+            "name": "Coffee Leaf Rust",
+            "symptoms": "Orange-yellow powdery spots on undersides of leaves",
+            "prevention": ["Plant resistant varieties", "Improve air circulation", "Manage shade properly"],
+            "treatment": ["Apply copper-based fungicides", "Remove infected leaves"],
+            "season": "Rainy season with high humidity"
+        },
+        {
+            "name": "Coffee Berry Borer",
+            "symptoms": "Small holes in coffee berries, reduced quality of beans",
+            "prevention": ["Harvest all ripe cherries", "Remove fallen berries", "Use pheromone traps"],
+            "treatment": ["Apply appropriate insecticides", "Use biological control agents"],
+            "season": "During fruit development and harvesting"
+        }
+    ],
+    "Grapes": [
+        {
+            "name": "Downy Mildew",
+            "symptoms": "Yellow spots on upper leaf surface, white fungal growth underneath",
+            "prevention": ["Improve air circulation", "Avoid overhead irrigation", "Use resistant varieties"],
+            "treatment": ["Apply copper fungicides", "Use systemic fungicides"],
+            "season": "Cool, moist conditions during growing season"
+        },
+        {
+            "name": "Powdery Mildew",
+            "symptoms": "White powdery growth on leaves, shoots, and berries",
+            "prevention": ["Plant resistant varieties", "Prune for air circulation", "Avoid excess nitrogen"],
+            "treatment": ["Apply sulfur-based fungicides", "Use systemic fungicides"],
+            "season": "Warm, dry conditions with moderate humidity"
+        }
+    ],
+    "Mango": [
+        {
+            "name": "Anthracnose",
+            "symptoms": "Dark, sunken spots on leaves, flowers, and fruits",
+            "prevention": ["Prune for air circulation", "Remove infected debris", "Avoid overhead irrigation"],
+            "treatment": ["Apply copper-based fungicides", "Use systemic fungicides during flowering"],
+            "season": "Rainy season and high humidity conditions"
+        },
+        {
+            "name": "Powdery Mildew",
+            "symptoms": "White powdery growth on leaves, flowers, and young fruits",
+            "prevention": ["Plant in sunny locations", "Avoid overhead watering", "Prune for ventilation"],
+            "treatment": ["Apply sulfur-based fungicides", "Use systemic fungicides"],
+            "season": "Cool, humid conditions"
+        }
+    ],
+    "Orange": [
+        {
+            "name": "Citrus Canker",
+            "symptoms": "Raised, corky lesions on leaves, stems, and fruits",
+            "prevention": ["Use disease-free nursery stock", "Avoid overhead irrigation", "Control citrus leafminer"],
+            "treatment": ["Apply copper sprays", "Remove infected plant parts"],
+            "season": "Warm, humid conditions with frequent rainfall"
+        },
+        {
+            "name": "Greening Disease",
+            "symptoms": "Yellowing of leaves, small bitter fruits, tree decline",
+            "prevention": ["Control Asian citrus psyllid", "Use certified disease-free plants", "Remove infected trees"],
+            "treatment": ["No cure available", "Manage psyllid populations", "Remove infected trees"],
+            "season": "Year-round, transmitted by insect vectors"
+        }
+    ],
+    "Papaya": [
+        {
+            "name": "Papaya Ringspot Virus",
+            "symptoms": "Ring spots on fruits, mosaic patterns on leaves, stunted growth",
+            "prevention": ["Use virus-resistant varieties", "Control aphid vectors", "Remove infected plants"],
+            "treatment": ["No cure available", "Remove infected plants", "Control aphid populations"],
+            "season": "Year-round, transmitted by aphid vectors"
+        },
+        {
+            "name": "Black Spot",
+            "symptoms": "Black spots on fruits, premature fruit drop",
+            "prevention": ["Improve drainage", "Avoid overhead irrigation", "Practice crop rotation"],
+            "treatment": ["Apply copper-based fungicides", "Remove infected fruits"],
+            "season": "Rainy season with high humidity"
+        }
+    ],
+    "Pomegranate": [
+        {
+            "name": "Bacterial Blight",
+            "symptoms": "Water-soaked lesions on leaves, cracking of fruits",
+            "prevention": ["Use disease-free planting material", "Avoid overhead irrigation", "Practice sanitation"],
+            "treatment": ["Apply copper-based bactericides", "Remove infected plant parts"],
+            "season": "Rainy season and high humidity conditions"
+        },
+        {
+            "name": "Fruit Rot",
+            "symptoms": "Brown rot of fruits, fungal growth on affected areas",
+            "prevention": ["Improve air circulation", "Avoid fruit injuries", "Harvest at proper maturity"],
+            "treatment": ["Apply fungicides like Carbendazim", "Remove infected fruits"],
+            "season": "During fruit development and storage"
+        }
+    ],
+    "Watermelon": [
+        {
+            "name": "Fusarium Wilt",
+            "symptoms": "Yellowing and wilting of vines, vascular discoloration",
+            "prevention": ["Use resistant varieties", "Practice crop rotation", "Improve soil drainage"],
+            "treatment": ["No effective cure", "Remove infected plants", "Soil solarization"],
+            "season": "Warm soil conditions, spreads through soil"
+        },
+        {
+            "name": "Anthracnose",
+            "symptoms": "Circular, sunken spots on fruits and leaves",
+            "prevention": ["Use certified seeds", "Avoid overhead irrigation", "Practice crop rotation"],
+            "treatment": ["Apply fungicides like Chlorothalonil", "Remove infected plant debris"],
+            "season": "Warm, humid conditions"
+        }
+    ],
+    "Muskmelon": [
+        {
+            "name": "Powdery Mildew",
+            "symptoms": "White powdery growth on leaves and stems",
+            "prevention": ["Plant resistant varieties", "Improve air circulation", "Avoid overhead watering"],
+            "treatment": ["Apply sulfur-based fungicides", "Use systemic fungicides"],
+            "season": "Warm, dry conditions with moderate humidity"
+        },
+        {
+            "name": "Downy Mildew",
+            "symptoms": "Yellow spots on leaves, fuzzy growth on undersides",
+            "prevention": ["Use resistant varieties", "Improve drainage", "Avoid overhead irrigation"],
+            "treatment": ["Apply copper-based fungicides", "Use systemic fungicides"],
+            "season": "Cool, moist conditions"
+        }
+    ],
+    "Chickpea": [
+        {
+            "name": "Wilt",
+            "symptoms": "Yellowing and wilting of plants, vascular browning",
+            "prevention": ["Use resistant varieties", "Practice crop rotation", "Treat seeds with fungicides"],
+            "treatment": ["Apply soil fungicides", "Remove infected plants"],
+            "season": "Warm soil conditions during growing season"
+        },
+        {
+            "name": "Blight",
+            "symptoms": "Brown spots on leaves, pods, and stems",
+            "prevention": ["Use disease-free seeds", "Avoid overhead irrigation", "Practice crop rotation"],
+            "treatment": ["Apply fungicides like Mancozeb", "Remove infected plant debris"],
+            "season": "Cool, moist conditions"
+        }
+    ],
+    "Lentil": [
+        {
+            "name": "Rust",
+            "symptoms": "Orange pustules on leaves and pods",
+            "prevention": ["Plant resistant varieties", "Avoid excess nitrogen", "Practice crop rotation"],
+            "treatment": ["Apply fungicides like Propiconazole", "Remove infected debris"],
+            "season": "Cool, moist conditions during flowering"
+        },
+        {
+            "name": "Wilt",
+            "symptoms": "Yellowing and wilting of plants, root rot",
+            "prevention": ["Use certified seeds", "Improve soil drainage", "Practice crop rotation"],
+            "treatment": ["Apply soil fungicides", "Remove infected plants"],
+            "season": "Warm, moist soil conditions"
+        }
+    ],
+    "Blackgram": [
+        {
+            "name": "Yellow Mosaic Virus",
+            "symptoms": "Yellow mosaic patterns on leaves, stunted growth",
+            "prevention": ["Control whitefly vectors", "Use virus-free seeds", "Remove infected plants"],
+            "treatment": ["No cure available", "Control whitefly populations", "Remove infected plants"],
+            "season": "Warm conditions, transmitted by whiteflies"
+        },
+        {
+            "name": "Leaf Spot",
+            "symptoms": "Brown spots on leaves, premature defoliation",
+            "prevention": ["Use disease-free seeds", "Practice crop rotation", "Avoid overhead irrigation"],
+            "treatment": ["Apply fungicides like Mancozeb", "Remove infected debris"],
+            "season": "Rainy season and high humidity"
+        }
+    ],
+    "Mungbean": [
+        {
+            "name": "Yellow Mosaic Virus",
+            "symptoms": "Yellow patches on leaves, reduced pod formation",
+            "prevention": ["Control whitefly vectors", "Use resistant varieties", "Remove infected plants"],
+            "treatment": ["No cure available", "Control whitefly populations", "Use reflective mulch"],
+            "season": "Warm conditions with high whitefly activity"
+        },
+        {
+            "name": "Powdery Mildew",
+            "symptoms": "White powdery growth on leaves and pods",
+            "prevention": ["Plant resistant varieties", "Avoid overcrowding", "Improve air circulation"],
+            "treatment": ["Apply sulfur-based fungicides", "Use systemic fungicides"],
+            "season": "Cool, humid conditions"
+        }
+    ],
+    "Mothbeans": [
+        {
+            "name": "Leaf Spot",
+            "symptoms": "Circular brown spots on leaves, defoliation",
+            "prevention": ["Use disease-free seeds", "Practice crop rotation", "Avoid overhead watering"],
+            "treatment": ["Apply fungicides like Chlorothalonil", "Remove infected plant debris"],
+            "season": "Rainy season with high humidity"
+        },
+        {
+            "name": "Root Rot",
+            "symptoms": "Yellowing of plants, rotting of roots, wilting",
+            "prevention": ["Improve soil drainage", "Avoid overwatering", "Use well-drained fields"],
+            "treatment": ["Apply soil fungicides", "Improve drainage"],
+            "season": "Waterlogged conditions during monsoon"
+        }
+    ],
+    "Kidneybeans": [
+        {
+            "name": "Common Blight",
+            "symptoms": "Water-soaked spots on leaves, yellowing, defoliation",
+            "prevention": ["Use certified seeds", "Avoid overhead irrigation", "Practice crop rotation"],
+            "treatment": ["Apply copper-based bactericides", "Remove infected plant debris"],
+            "season": "Warm, humid conditions"
+        },
+        {
+            "name": "Anthracnose",
+            "symptoms": "Sunken spots on pods, dark lesions on stems and leaves",
+            "prevention": ["Use disease-free seeds", "Practice crop rotation", "Improve air circulation"],
+            "treatment": ["Apply fungicides like Mancozeb", "Remove infected plant material"],
+            "season": "Cool, moist conditions"
+        }
+    ],
+    "Pigeonpeas": [
+        {
+            "name": "Wilt",
+            "symptoms": "Yellowing and wilting of leaves, vascular browning",
+            "prevention": ["Use resistant varieties", "Practice crop rotation", "Improve soil drainage"],
+            "treatment": ["Apply soil fungicides", "Remove infected plants"],
+            "season": "Warm, moist soil conditions"
+        },
+        {
+            "name": "Pod Borer",
+            "symptoms": "Holes in pods, larvae inside pods, reduced yield",
+            "prevention": ["Use pheromone traps", "Practice intercropping", "Monitor regularly"],
+            "treatment": ["Apply appropriate insecticides", "Use biological control agents"],
+            "season": "During pod formation and development"
+        }
+    ],
+    "Jute": [
+        {
+            "name": "Stem Rot",
+            "symptoms": "Rotting of stem base, yellowing of leaves, plant death",
+            "prevention": ["Improve field drainage", "Avoid overcrowding", "Use disease-free seeds"],
+            "treatment": ["Apply fungicides like Carbendazim", "Remove infected plants"],
+            "season": "Waterlogged conditions during monsoon"
+        },
+        {
+            "name": "Leaf Spot",
+            "symptoms": "Brown spots on leaves, premature defoliation",
+            "prevention": ["Practice crop rotation", "Avoid overhead irrigation", "Remove crop debris"],
+            "treatment": ["Apply fungicides like Mancozeb", "Improve air circulation"],
+            "season": "High humidity and moderate temperature"
         }
     ]
 }
@@ -162,7 +466,7 @@ def http_get_json(url: str, timeout=15):
         return None
 
 def safe_image_show(crop_name: str):
-    """Show crop image if exists; fallback if Streamlit doesn't accept use_container_width."""
+    """Show crop image if exists; show styled placeholder if missing."""
     if not IMAGES_DIR.exists():
         st.warning("❌ Images folder not found.")
         return
@@ -172,13 +476,77 @@ def safe_image_show(crop_name: str):
         test_path = IMAGES_DIR / (base + ext)
         if test_path.exists():
             try:
-                st.image(str(test_path), caption=crop_name, use_container_width=True)
-            except TypeError:
-                # compatibility fallback
-                st.image(str(test_path), caption=crop_name)
-            return
+                # Try to verify the image is valid before displaying
+                from PIL import Image as PILImage
+                with PILImage.open(test_path) as img:
+                    img.verify()
+                
+                # If verification passes, display the image
+                st.image(str(test_path), caption=crop_name, width=300)
+                return
+            except (TypeError, Exception) as e:
+                # If there's any error with the image, create a placeholder instead
+                logger.warning(f"Image error for {crop_name}: {e}")
+                break
 
-    st.warning(f"❌ Image not found for {crop_name}.")
+    # Show a nice placeholder instead of warning
+    create_crop_placeholder(crop_name)
+
+def create_crop_placeholder(crop_name: str):
+    """Create a styled placeholder for missing crop images"""
+    # Crop-specific colors and emojis
+    crop_themes = {
+        'blackgram': {'color': '#4A4A4A', 'bg': '#F5F5F5', 'emoji': '🤎', 'desc': 'Black Lentil'},
+        'chickpea': {'color': '#D2691E', 'bg': '#FFF8DC', 'emoji': '🥬', 'desc': 'Chickpea/Gram'},
+        'cotton': {'color': '#FFE4E1', 'bg': '#FFFFFF', 'emoji': '☁️', 'desc': 'Cotton Plant'},
+        'lentil': {'color': '#CD853F', 'bg': '#FFF8DC', 'emoji': '🥬', 'desc': 'Red Lentils'},
+        'mango': {'color': '#FFD700', 'bg': '#FFFAF0', 'emoji': '🥭', 'desc': 'Mango Tree'},
+        'mothbeans': {'color': '#8B4513', 'bg': '#F5DEB3', 'emoji': '🌱', 'desc': 'Moth Beans'},
+        'mungbean': {'color': '#228B22', 'bg': '#F0FFF0', 'emoji': '👌', 'desc': 'Mung Bean'},
+        'muskmelon': {'color': '#FFA500', 'bg': '#FFFACD', 'emoji': '🍈', 'desc': 'Muskmelon'},
+        'pigeonpeas': {'color': '#DAA520', 'bg': '#FFFAF0', 'emoji': '🥬', 'desc': 'Pigeon Peas'}
+    }
+    
+    theme = crop_themes.get(crop_name.lower(), {'color': '#2E8B57', 'bg': '#F0FFF0', 'emoji': '🌱', 'desc': 'Agricultural Crop'})
+    
+    # Create a styled HTML placeholder
+    placeholder_html = f"""
+    <div style="
+        width: 300px;
+        height: 200px;
+        background: linear-gradient(135deg, {theme['bg']} 0%, {theme['color']}20 100%);
+        border: 2px solid {theme['color']};
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        margin: 10px 0;
+    ">
+        <div style="font-size: 48px; margin-bottom: 10px;">{theme['emoji']}</div>
+        <div style="
+            font-size: 18px;
+            font-weight: bold;
+            color: {theme['color']};
+            margin-bottom: 5px;
+        ">{crop_name.title()}</div>
+        <div style="
+            font-size: 14px;
+            color: {theme['color']}80;
+            font-style: italic;
+        ">{theme['desc']}</div>
+        <div style="
+            font-size: 12px;
+            color: {theme['color']}60;
+            margin-top: 8px;
+        ">🎨 Crop Placeholder</div>
+    </div>
+    """
+    
+    st.markdown(placeholder_html, unsafe_allow_html=True)
 
 def fmt_money(val: float) -> str:
     """Format currency (INR) nicely."""
@@ -292,9 +660,9 @@ model, label_encoder = load_model_and_encoder()
 # Recommendation fallback if module not available
 try:
     from recommendation import get_crop_recommendations  # type: ignore
-except Exception:
+except Exception as e:
     st.warning("Recommendation module not found. Using built-in fallback recommendations.")
-
+    st.error(f"Import error details: {e}")
     def get_crop_recommendations(prediction, land_area, budget):
         """Fallback: return a single recommendation object."""
         return [{
@@ -359,7 +727,7 @@ if selected_tab == "Get Recommendations":
             k = st.slider("🧲 Potassium (K) level", min_value=0, max_value=200, value=50)
             ph = st.slider("🧬 Soil pH", min_value=0.0, max_value=14.0, value=6.5, step=0.1)
 
-        submitted = st.form_submit_button("🌱 Get Crop Recommendations", use_container_width=True)
+        submitted = st.form_submit_button("🌱 Get Crop Recommendations", width='stretch')
 
     if submitted:
         # basic validations
@@ -397,34 +765,109 @@ if selected_tab == "Get Recommendations":
                         "ph": ph, "rainfall": rainfall
                     }])[feature_order]
 
-                    # Single prediction call with error handling
+                    # Skip ML model prediction - use pincode-based recommendations directly
+                    st.info("📍 **Using Pincode-Based Recommendations:** Analyzing crops from dataset based on your location")
+                    
+                    # Set a dummy prediction since we're using pincode-based mode
+                    prediction = "PINCODE_BASED"
+
+                    # get recommendations (plugin or fallback) - pass pincode for location-specific recommendations
                     try:
-                        with st.spinner("🤖 AI is analyzing best crops..."):
-                            pred_raw = model.predict(features)[0]
-                    except Exception as e:
-                        logger.exception("Prediction error")
-                        st.error(f"❌ Prediction failed: {e}")
-                        pred_raw = None
-
-                    if pred_raw is None:
-                        st.stop()
-
-                    # decode prediction if label encoder available
-                    prediction = None
-                    if label_encoder:
+                        # Get recommendations with API key
+                        api_key = os.getenv('OPENWEATHERMAP_API_KEY')
+                        
+                        # Show weather data status
+                        if api_key:
+                            st.info("🌤️ Using real-time weather data for recommendations...")
+                        else:
+                            st.warning("⚠️ No API key found. Using pincode-based weather estimation for recommendations.")
+                        
+                        # IMPORTANT: Get pincode-specific recommendations directly from dataset
+                        # AGGRESSIVE cache clearing and session state management
                         try:
-                            prediction = label_encoder.inverse_transform([pred_raw])[0]
-                        except Exception:
-                            try:
-                                prediction = label_encoder.inverse_transform([int(pred_raw)])[0]
-                            except Exception:
-                                prediction = str(pred_raw)
-                    else:
-                        prediction = str(pred_raw)
-
-                    # get recommendations (plugin or fallback)
-                    try:
-                        recommendations = get_crop_recommendations(prediction, land_area, budget)
+                            st.cache_data.clear()
+                        except:
+                            pass
+                        try:
+                            st.cache_resource.clear() 
+                        except:
+                            pass
+                        
+                        # Clear any cached function results
+                        if hasattr(get_crop_recommendations, 'clear'):
+                            get_crop_recommendations.clear()
+                        
+                        # Force Python to clear any internal caches
+                        import gc
+                        gc.collect()
+                        
+                        # Store current pincode in session state to track changes
+                        if 'current_pincode' not in st.session_state:
+                            st.session_state.current_pincode = None
+                        
+                        # Check if pincode changed
+                        if st.session_state.current_pincode != pin_code:
+                            st.write(f"🔄 **PINCODE CHANGED:** {st.session_state.current_pincode} → {pin_code}**")
+                            st.session_state.current_pincode = pin_code
+                            # Clear any cached data when pincode changes
+                            if hasattr(st, 'cache_data'):
+                                st.cache_data.clear()
+                        else:
+                            st.write(f"🔍 **Getting recommendations for PIN {pin_code}...**")
+                        
+                        # Get recommendations with explicit parameters and unique processing
+                        import hashlib
+                        import time
+                        timestamp = int(time.time() * 1000)  # Millisecond timestamp
+                        pincode_hash = hashlib.md5(f"{pin_code}_{budget}_{land_area}_{timestamp}".encode()).hexdigest()[:8]
+                        st.write(f"📊 **Processing ID:** {pincode_hash} (timestamp: {timestamp})")
+                        
+                        # USE COMPLETELY FRESH FUNCTION - bypass ALL possible caching
+                        import sys
+                        import os
+                        
+                        # Import the fresh recommendation function
+                        sys.path.insert(0, os.path.join(os.getcwd(), 'app'))
+                        from fresh_recommendations import get_fresh_crop_recommendations
+                        
+                        # Call completely fresh function
+                        st.write(f"🆕 **USING FRESH FUNCTION for PIN {pin_code}**")
+                        recommendations = get_fresh_crop_recommendations(
+                            pincode=str(pin_code),
+                            land_area=land_area, 
+                            budget=budget
+                        )
+                        
+                        # Show fresh results immediately
+                        if recommendations:
+                            fresh_top_3 = [rec['name'] for rec in recommendations[:3]]
+                            st.success(f"✨ **FRESH RESULTS for PIN {pin_code}:** {', '.join(fresh_top_3)}")
+                        
+                        if recommendations:
+                            # Show detailed debugging information
+                            top_3_crops = [rec['name'] for rec in recommendations[:3]]
+                            st.success(f"🌾 **PIN {pin_code} Top 3:** {', '.join(top_3_crops)}")
+                            
+                            # Additional verification
+                            st.write("**🗺️ VERIFICATION:**")
+                            for i, rec in enumerate(recommendations[:5], 1):
+                                score = rec.get('debug_score', 'N/A')
+                                st.write(f"{i}. **{rec['name']}** (Score: {score})")
+                            
+                            # Double-check by calling fresh function again
+                            st.write("**🔄 DOUBLE-CHECK (calling fresh function again):**")
+                            verify_recs = get_fresh_crop_recommendations(str(pin_code), land_area, budget)
+                            verify_top_3 = [rec['name'] for rec in verify_recs[:3]] if verify_recs else ["No crops"]
+                            st.write(f"Second call result: {', '.join(verify_top_3)}")
+                            
+                        else:
+                            st.error("No recommendations generated!")
+                        
+                        # Show success message
+                        if api_key and recommendations:
+                            st.success(f"✅ Found {len(recommendations)} crops specifically suited for PIN {pin_code} using real-time weather!")
+                        elif recommendations:
+                            st.success(f"✅ Found {len(recommendations)} crops specifically suited for PIN {pin_code} based on regional conditions!")
                     except Exception:
                         logger.exception("Recommendation function failed; using fallback single recommendation")
                         recommendations = [{
@@ -443,17 +886,30 @@ if selected_tab == "Get Recommendations":
                             "warnings": ["Avoid waterlogging"]
                         }]
 
-                    st.success("✅ Analysis complete! Here are your best crop options:")
+                    # Check image availability
+                    available_images = len([f for f in (IMAGES_DIR).glob('*.jpg')]) if IMAGES_DIR.exists() else 0
+                    total_crops = 22  # From dataset analysis
+                    
+                    if available_images >= total_crops:
+                        st.success(f"🎨 **Complete Image Collection:** All {total_crops} crop images available! ({available_images} total images)")
+                    else:
+                        st.info(f"🖼️ **Image Status:** {available_images}/{total_crops} crop images available. Missing images will show as styled placeholders.")
+                    
+                    st.success(f"✅ Analysis complete for PIN {pin_code}! Here are your best crop options:")
 
                     for idx, crop in enumerate(recommendations, 1):
-                        with st.expander(f"{idx}. {crop.get('name', 'Unknown Crop')} 🌱", expanded=(idx == 1)):
+                        crop_name = crop.get('name', 'Unknown Crop')
+                        with st.expander(f"{idx}. {crop_name} 🌱 (PIN: {pin_code})", expanded=(idx == 1)):
+                            # Clear pincode identification
+                            st.info(f"📍 **This crop recommendation is specifically for PIN {pin_code}**")
+                            
                             col_img, col_info = st.columns([1, 2])
                             with col_img:
-                                safe_image_show(crop.get("name", ""))
+                                safe_image_show(crop_name)
                             with col_info:
-                                st.subheader(crop.get("name", "Crop"))
-                                st.write(f"**Best for:** {pin_code} region")
-                                st.write(f"**Land Area:** {land_area} acres")
+                                st.subheader(f"{crop_name} for PIN {pin_code}")
+                                st.write(f"**Specifically suited for:** {pin_code} region")
+                                st.write(f"**Your land area:** {land_area} acres")
 
                             # Financial Overview
                             st.subheader("💰 Financial Overview")
@@ -512,7 +968,7 @@ if selected_tab == "Get Recommendations":
                                     data=f,
                                     file_name="crop_recommendation_report.pdf",
                                     mime="application/pdf",
-                                    use_container_width=True,
+                                    width='stretch',
                                 )
                         except Exception as e:
                             logger.exception("PDF export failed")
