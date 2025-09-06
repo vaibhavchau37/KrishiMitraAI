@@ -12,7 +12,6 @@ import streamlit as st
 from streamlit_option_menu import option_menu  # For better navigation
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
 # -------------------------
@@ -76,6 +75,9 @@ if not API_KEY:
 if not API_KEY:
     st.error("Missing OpenWeather API key. Set OPENWEATHER_API_KEY in st.secrets or as an environment variable.")
     st.stop()
+
+# Gemini API key
+gemini_api_key = os.getenv("GEMINI_API_KEY")
 
 # =========================
 # Crop Diseases Database
