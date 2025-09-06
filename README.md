@@ -243,24 +243,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - GitHub: [@vaibhavchau37](https://github.com/vaibhavchau37)
 - Project: KrishiMitra AI - Intelligent Crop Recommendation System
 
----
 
-## 🙏 Acknowledgments
-
-- **ICAR** for agricultural research and data
-- **Indian Agricultural Universities** for crop research
-- **Open Source Community** for tools and libraries
-- **Indian Farmers** for inspiration and feedback
-
----
-
-## 📞 Support
-
-- **Issues**: [GitHub Issues](https://github.com/vaibhavchau37/KrishiMitraAI/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/vaibhavchau37/KrishiMitraAI/discussions)
-- **Email**: Contact through GitHub profile
-
----
 
 <div align="center">
 
