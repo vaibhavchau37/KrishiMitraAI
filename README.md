@@ -10,6 +10,7 @@ KrishiMitra AI is a comprehensive agricultural decision support system that prov
 ![License](https://img.shields.io/badge/License-MIT-yellow)
 
 ## ✨ Features
+<img width="1600" height="1000" alt="image" src="https://github.com/user-attachments/assets/ae8ce701-5e5c-4829-97ca-01cc48a69ab8" />
 
 ### 🎯 **Smart Crop Recommendations**
 - **Pincode-based Analysis**: Get region-specific crop suggestions based on your exact location
